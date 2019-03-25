@@ -19,6 +19,21 @@ router.get('/tortillas', async (req, res, next) => {
   }
 });
 
+router.get('/tortillas/:id', async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const tortilla = await Tortilla.findById(id);
+    if (!tortilla) {
+      res.status(404);
+      res.json({ message: 'Tortillas not found' });
+      return;
+    }
+    res.json(tortilla);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/tortillas', async (req, res, next) => {
   const tortilla = req.body;
   if (!tortilla.size || !tortilla.name || !tortilla.special) {
